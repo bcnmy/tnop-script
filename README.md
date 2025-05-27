@@ -1,6 +1,6 @@
 # TNOP Stress Test Script
 
-This script is designed to run stress tests for the TNOP (Transaction Network Orchestration Protocol) program on the Biconomy Network. It broadcasts multiple supertransactions and tracks their execution status.
+This script is designed to run stress tests for the TNOP program on the Biconomy Network. It broadcasts multiple supertransactions and tracks their execution status.
 
 ## Prerequisites
 
@@ -37,7 +37,7 @@ bun --version
 
 1. Clone the repository:
 ```bash
-git clone <repository-url>
+git clone https://github.com/bcnmy/tnop-script.git
 cd tnop-script
 ```
 
