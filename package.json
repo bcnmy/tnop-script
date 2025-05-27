@@ -1,0 +1,17 @@
+{
+  "name": "tnop-script",
+  "module": "index.ts",
+  "type": "module",
+  "private": true,
+  "devDependencies": {
+    "@types/bun": "latest"
+  },
+  "peerDependencies": {
+    "typescript": "^5"
+  },
+  "dependencies": {
+    "@biconomy/abstractjs": "^1.0.13",
+    "dotenv": "^16.5.0",
+    "viem": "^2.30.1"
+  }
+}
