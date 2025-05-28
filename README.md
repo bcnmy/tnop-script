@@ -58,7 +58,20 @@ PRIVATE_KEY=your_private_key_here
 
 # Number of supertransactions to broadcast
 STX_COUNT=20
+
+# Chain ID for the network to use (e.g., 11155420 for Op Sepolia)
+CHAIN_ID=11155420
 ```
+
+## Chain Selection
+
+The script supports multiple networks through the `CHAIN_ID` environment variable. Some common chain IDs:
+- Base Sepolia: 84532
+- Base Mainnet: 8453
+- Ethereum Sepolia: 11155111
+- Ethereum Mainnet: 1
+
+Make sure to set the appropriate `CHAIN_ID` for your target network.
 
 ## Running the Script
 

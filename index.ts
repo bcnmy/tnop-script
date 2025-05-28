@@ -1,11 +1,12 @@
 import {
     createMeeClient,
+    getChain,
     toMultichainNexusAccount
   } from "@biconomy/abstractjs";
   import { createWalletClient, formatUnits, http, publicActions } from "viem";
   import { privateKeyToAccount } from "viem/accounts";
-  import { baseSepolia } from "viem/chains";
   import dotenv from 'dotenv';
+import { baseSepolia } from "viem/chains";
   
   // Load environment variables
   dotenv.config();
@@ -22,27 +23,37 @@ import {
     if (!stxCount) {
       throw new Error('STX_COUNT environment variable is not set');
     }
-    
+
+    // Get chain from environment variable
+    const chainId = process.env.CHAIN_ID;
+    if (!chainId) {
+      throw new Error('CHAIN_ID environment variable is not set');
+    }
+    const chain = getChain(Number(chainId));
+    if (!chain) {
+      throw new Error('Unrecognized chainId: ' + chainId);
+    }
+
     // Set up account
     const eoa = privateKeyToAccount(privateKey as `0x${string}`);
 
     // Set up wallet client for Base Sepolia
     const walletClient = createWalletClient({
         account: eoa,
-        chain: baseSepolia,
+        chain,
         transport: http()
     }).extend(publicActions);
 
     // Create multichain smart account
     const smartAccount = await toMultichainNexusAccount({
       signer: eoa,
-      chains: [baseSepolia],
+      chains: [chain],
       transports: [http()]
     });
 
     // Fetch smart account balance using wallet client
     const balance = await walletClient.getBalance({
-        address: smartAccount.addressOn(baseSepolia.id) as `0x${string}`
+        address: smartAccount.addressOn(chain.id) as `0x${string}`
     });
 
     if (balance === BigInt(0)) {
@@ -51,8 +62,8 @@ import {
 
     console.log("--------------------------------------------------------------------------------");
     console.log("EOA:", eoa.address);
-    console.log("Nexus Account:", smartAccount.addressOn(baseSepolia.id));
-    console.log("Base Sepolia Balance:", Number(formatUnits(balance, 18)).toFixed(4), "ETH");
+    console.log("Nexus Account:", smartAccount.addressOn(chain.id));
+    console.log(`${chain.name} Balance:`, Number(formatUnits(balance, 18)).toFixed(4), "ETH");
     console.log("--------------------------------------------------------------------------------");
     
     // Initialize the orchestration client
@@ -74,13 +85,13 @@ import {
                 data: "0x",
               }
             ],
-            chainId: baseSepolia.id
+            chainId: chain.id
           }
         });
         const result = await meeClient.execute({
           feeToken: {
             address: "0x0000000000000000000000000000000000000000",
-            chainId: baseSepolia.id
+            chainId: chain.id
           },
           instructions: [instruction]
         });
