@@ -6,7 +6,6 @@ import {
   import { createWalletClient, formatUnits, http, publicActions } from "viem";
   import { privateKeyToAccount } from "viem/accounts";
   import dotenv from 'dotenv';
-import { baseSepolia } from "viem/chains";
   
   // Load environment variables
   dotenv.config();
